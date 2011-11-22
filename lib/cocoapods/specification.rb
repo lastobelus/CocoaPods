@@ -21,7 +21,7 @@ module Pod
     attr_accessor :defined_in_file
 
     def initialize
-      @dependencies, @resources, @clean_paths = [], [], []
+      @dependencies, @resources, @clean_paths, @subspecs = [], [], [], []
       @xcconfig = Xcodeproj::Config.new
       yield self if block_given?
     end
@@ -126,6 +126,15 @@ module Pod
       dep
     end
     attr_reader :dependencies
+
+    def subspec(name)
+      subspec = self.class.new
+      subspec.name = "#{self.name}/#{name}"
+      @subspecs << subspec
+      yield subspec
+      subspec
+    end
+    attr_reader :subspecs
 
     # These are attributes which are also on a Podfile
     # TODO remove this, we no longer allow to install specs as Podfile
