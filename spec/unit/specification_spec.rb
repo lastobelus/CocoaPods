@@ -279,3 +279,21 @@ describe "A Pod::Specification, in general," do
     list.glob.should == FileList[(ROOT + '*').to_s].exclude('Rakefile').map { |path| Pathname.new(path) }
   end
 end
+
+describe "A Pod::Specification with subspecs" do
+  before do
+    @spec = Pod::Spec.new do |s|
+      s.name = 'MainSpec'
+
+      s.subspec 'FirstSubSpec' do |fss|
+        fss.subspec 'SecondSubSpec' do |sss|
+        end
+      end
+    end
+  end
+
+  it "automatically names subspecs after the parent spec" do
+    @spec.subspecs.first.name.should == 'MainSpec/FirstSubSpec'
+    @spec.subspecs.first.subspecs.first.name.should == 'MainSpec/FirstSubSpec/SecondSubSpec'
+  end
+end

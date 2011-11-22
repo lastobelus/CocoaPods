@@ -115,14 +115,9 @@ module Pod
       flags
     end
 
-    # These are attributes which are also on a Podfile
-
     attr_accessor :platform
 
     attr_accessor :requires_arc
-
-    attr_accessor :generate_bridge_support
-    alias_method :generate_bridge_support?, :generate_bridge_support
 
     def dependency(*name_and_version_requirements)
       name, *version_requirements = name_and_version_requirements.flatten
@@ -131,6 +126,12 @@ module Pod
       dep
     end
     attr_reader :dependencies
+
+    # These are attributes which are also on a Podfile
+    # TODO remove this, we no longer allow to install specs as Podfile
+
+    attr_accessor :generate_bridge_support
+    alias_method :generate_bridge_support?, :generate_bridge_support
 
     # Not attributes
 
